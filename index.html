@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Audiometer - Model 1975 AI</title>
+    <link rel="stylesheet" href="styles/retro-audiometer.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="audiometer-chassis">
+        <!-- Main Control Panel -->
+        <div class="control-panel">
+            <!-- Header Section -->
+            <div class="header-section">
+                <div class="brand-plate">
+                    <h1 class="brand-name">AUDIOMETER</h1>
+                    <div class="model-info">
+                        <span class="model">Model 1975-AI</span>
+                        <span class="serial">S/N: 7501-2024</span>
+                    </div>
+                </div>
+                
+                <div class="power-section">
+                    <div class="power-switch">
+                        <div class="switch-body">
+                            <div class="switch-toggle active"></div>
+                        </div>
+                        <label>POWER</label>
+                    </div>
+                    <div class="power-indicator">
+                        <div class="led-ring">
+                            <div class="led-center active"></div>
+                        </div>
+                        <label>ON</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Controls Section -->
+            <div class="main-controls">
+                <!-- Intensity Control -->
+                <div class="intensity-section">
+                    <div class="section-label">INTENSITY CONTROL</div>
+                    <div class="rotary-knob-container">
+                        <div class="knob-scale">
+                            <div class="scale-marks">
+                                <!-- Scale markings from -10 to 120 dB -->
+                                <div class="major-mark" style="--angle: 0deg"><span>-10</span></div>
+                                <div class="minor-mark" style="--angle: 18deg"></div>
+                                <div class="minor-mark" style="--angle: 36deg"></div>
+                                <div class="major-mark" style="--angle: 54deg"><span>20</span></div>
+                                <div class="minor-mark" style="--angle: 72deg"></div>
+                                <div class="minor-mark" style="--angle: 90deg"></div>
+                                <div class="major-mark" style="--angle: 108deg"><span>40</span></div>
+                                <div class="minor-mark" style="--angle: 126deg"></div>
+                                <div class="minor-mark" style="--angle: 144deg"></div>
+                                <div class="major-mark" style="--angle: 162deg"><span>60</span></div>
+                                <div class="minor-mark" style="--angle: 180deg"></div>
+                                <div class="minor-mark" style="--angle: 198deg"></div>
+                                <div class="major-mark" style="--angle: 216deg"><span>80</span></div>
+                                <div class="minor-mark" style="--angle: 234deg"></div>
+                                <div class="minor-mark" style="--angle: 252deg"></div>
+                                <div class="major-mark" style="--angle: 270deg"><span>100</span></div>
+                                <div class="minor-mark" style="--angle: 288deg"></div>
+                                <div class="major-mark" style="--angle: 306deg"><span>120</span></div>
+                            </div>
+                        </div>
+                        <div class="rotary-knob" id="intensity-knob">
+                            <div class="knob-face">
+                                <div class="knob-pointer"></div>
+                                <div class="knob-center"></div>
+                                <div class="knob-grip-1"></div>
+                                <div class="knob-grip-2"></div>
+                                <div class="knob-grip-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="digital-readout">
+                        <div class="readout-display">
+                            <span id="intensity-display">40</span>
+                            <span class="unit">dB HL</span>
+                        </div>
+                    </div>
+                    <div class="ai-indicator">
+                        <div class="ai-led pulsing"></div>
+                        <label>AI CONTROL</label>
+                    </div>
+                </div>
+
+                <!-- Frequency Selection -->
+                <div class="frequency-section">
+                    <div class="section-label">FREQUENCY SELECTION</div>
+                    <div class="frequency-selector">
+                        <div class="selector-body">
+                            <div class="frequency-positions">
+                                <div class="freq-position" data-freq="125">125</div>
+                                <div class="freq-position" data-freq="250">250</div>
+                                <div class="freq-position" data-freq="500">500</div>
+                                <div class="freq-position" data-freq="750">750</div>
+                                <div class="freq-position active" data-freq="1000">1K</div>
+                                <div class="freq-position" data-freq="1500">1.5K</div>
+                                <div class="freq-position" data-freq="2000">2K</div>
+                                <div class="freq-position" data-freq="3000">3K</div>
+                                <div class="freq-position" data-freq="4000">4K</div>
+                                <div class="freq-position" data-freq="6000">6K</div>
+                                <div class="freq-position" data-freq="8000">8K</div>
+                            </div>
+                            <div class="selector-pointer"></div>
+                        </div>
+                    </div>
+                    <div class="frequency-display">
+                        <span id="frequency-display">1000</span>
+                        <span class="unit">Hz</span>
+                    </div>
+                </div>
+
+                <!-- Ear Selection -->
+                <div class="ear-section">
+                    <div class="section-label">EAR SELECTION</div>
+                    <div class="ear-toggle-container">
+                        <div class="toggle-switch">
+                            <div class="toggle-body">
+                                <div class="toggle-positions">
+                                    <span class="position-label left">LEFT</span>
+                                    <span class="position-label right active">RIGHT</span>
+                                </div>
+                                <div class="toggle-lever right" id="ear-toggle">
+                                    <div class="lever-handle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ear-indicators">
+                        <div class="ear-indicator left">
+                            <div class="ear-led" id="left-ear-led"></div>
+                            <label>L</label>
+                        </div>
+                        <div class="ear-indicator right">
+                            <div class="ear-led active" id="right-ear-led"></div>
+                            <label>R</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Display Section -->
+            <div class="status-section">
+                <div class="crt-display">
+                    <div class="crt-bezel">
+                        <div class="crt-screen">
+                            <div class="scan-lines"></div>
+                            <div class="crt-content">
+                                <div class="status-header">
+                                    <span class="cursor">></span>
+                                    <span class="system-name">AUDIOMETER AI v1.0</span>
+                                </div>
+                                <div class="status-lines">
+                                    <div class="status-line">
+                                        <span class="label">STATUS:</span>
+                                        <span class="value" id="system-status">READY</span>
+                                    </div>
+                                    <div class="status-line">
+                                        <span class="label">MODE:</span>
+                                        <span class="value" id="test-mode">AUTONOMOUS</span>
+                                    </div>
+                                    <div class="status-line">
+                                        <span class="label">FREQ:</span>
+                                        <span class="value" id="current-freq">1000 Hz</span>
+                                    </div>
+                                    <div class="status-line">
+                                        <span class="label">LEVEL:</span>
+                                        <span class="value" id="current-level">40 dB HL</span>
+                                    </div>
+                                    <div class="status-line">
+                                        <span class="label">EAR:</span>
+                                        <span class="value" id="current-ear">RIGHT</span>
+                                    </div>
+                                    <div class="status-line">
+                                        <span class="label">AI:</span>
+                                        <span class="value ai-status" id="ai-decision">INITIALIZING...</span>
+                                    </div>
+                                </div>
+                                <div class="command-line">
+                                    <span class="prompt">AI></span>
+                                    <span class="command" id="ai-command">SYSTEM READY FOR AUTONOMOUS TESTING</span>
+                                    <span class="cursor-blink">_</span>
+                                </div>
+                                <div class="progress-line">
+                                    <span class="progress-label">PROGRESS:</span>
+                                    <span class="progress-bar" id="test-progress">[░░░░░░░░░░░░░░░░░░░░] 0%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="crt-controls">
+                            <div class="crt-knob">
+                                <div class="knob-mini"></div>
+                                <label>BRIGHT</label>
+                            </div>
+                            <div class="crt-knob">
+                                <div class="knob-mini"></div>
+                                <label>CONTRAST</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indicator Panel -->
+            <div class="indicator-panel">
+                <div class="indicator-group">
+                    <div class="indicator-light" id="tone-indicator">
+                        <div class="led-housing">
+                            <div class="led-lens yellow"></div>
+                        </div>
+                        <label>TONE</label>
+                    </div>
+                    <div class="indicator-light" id="response-indicator">
+                        <div class="led-housing">
+                            <div class="led-lens blue"></div>
+                        </div>
+                        <label>RESPONSE</label>
+                    </div>
+                    <div class="indicator-light" id="test-indicator">
+                        <div class="led-housing">
+                            <div class="led-lens green"></div>
+                        </div>
+                        <label>TEST</label>
+                    </div>
+                    <div class="indicator-light" id="ai-indicator">
+                        <div class="led-housing">
+                            <div class="led-lens red pulsing"></div>
+                        </div>
+                        <label>AI ACTIVE</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control Buttons -->
+            <div class="button-panel">
+                <button class="retro-button start-button" id="start-test">
+                    <div class="button-face">
+                        <span>START</span>
+                        <span class="button-subtext">AUTO TEST</span>
+                    </div>
+                </button>
+                <button class="retro-button stop-button" id="stop-test">
+                    <div class="button-face">
+                        <span>STOP</span>
+                        <span class="button-subtext">EMERGENCY</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Patient Response Section -->
+        <div class="patient-section">
+            <div class="patient-panel">
+                <div class="panel-header">
+                    <h3>PATIENT RESPONSE INTERFACE</h3>
+                    <div class="response-indicator-strip">
+                        <div class="strip-led" id="response-led-1"></div>
+                        <div class="strip-led" id="response-led-2"></div>
+                        <div class="strip-led" id="response-led-3"></div>
+                        <div class="strip-led" id="response-led-4"></div>
+                        <div class="strip-led" id="response-led-5"></div>
+                    </div>
+                </div>
+                
+                <div class="response-button-container">
+                    <button class="patient-response-button" id="patient-button">
+                        <div class="button-ring">
+                            <div class="button-surface">
+                                <div class="button-light"></div>
+                                <span class="button-text">PRESS WHEN<br>YOU HEAR<br>THE TONE</span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
+                <div class="patient-instructions">
+                    <div class="instruction-panel">
+                        <h4>INSTRUCTIONS</h4>
+                        <ul>
+                            <li>Put on the headphones</li>
+                            <li>Press the button when you hear ANY tone</li>
+                            <li>Even very quiet tones - press the button</li>
+                            <li>Do NOT press if you're not sure</li>
+                            <li>The AI will control everything else</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="clinical-status-panel">
+                        <h4>CLINICAL STATUS</h4>
+                        <div class="status-display" id="clinical-status">
+                            <div>SYSTEM: READY</div>
+                            <div>PROTOCOL: HUGHSON-WESTLAKE</div>
+                            <div>MODE: AUTONOMOUS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audiogram Display -->
+        <div class="audiogram-section">
+            <div class="audiogram-panel">
+                <div class="panel-header">
+                    <h3>REAL-TIME AUDIOGRAM</h3>
+                    <div class="confidence-strip">
+                        <span class="confidence-label">CONFIDENCE:</span>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidence-fill"></div>
+                        </div>
+                        <span class="confidence-value" id="confidence-value">--</span>
+                    </div>
+                </div>
+                <div class="audiogram-display" id="audiogram-container">
+                    <!-- Audiogram will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vintage Audio Equipment Styling -->
+    <div class="equipment-details">
+        <div class="ventilation-grille">
+            <div class="grille-line"></div>
+            <div class="grille-line"></div>
+            <div class="grille-line"></div>
+            <div class="grille-line"></div>
+            <div class="grille-line"></div>
+        </div>
+        <div class="chassis-screws">
+            <div class="screw top-left"></div>
+            <div class="screw top-right"></div>
+            <div class="screw bottom-left"></div>
+            <div class="screw bottom-right"></div>
+        </div>
+    </div>
+
+    <script type="module" src="js/retro-audiometer-ui.js"></script>
+</body>
+</html>

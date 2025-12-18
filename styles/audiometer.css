@@ -1,0 +1,419 @@
+/* Audiometer-specific styling */
+
+/* Display Section */
+.display-panel {
+    min-height: 500px;
+}
+
+.display-row {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+}
+
+.audiogram-container {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.test-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.test-info h4 {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--retro-accent);
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.info-display {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--retro-border);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.info-row:last-child {
+    margin-bottom: 0;
+}
+
+.info-row span:first-child {
+    font-family: var(--font-mono);
+    color: var(--retro-text);
+    font-weight: bold;
+}
+
+.confidence-display {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--retro-border);
+}
+
+.confidence-display h5 {
+    margin: 0 0 15px 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--retro-accent);
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.metric-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 11px;
+}
+
+.metric-row:last-child {
+    margin-bottom: 0;
+}
+
+.metric-row span:first-child {
+    font-family: var(--font-mono);
+    color: var(--retro-text);
+    font-weight: bold;
+    min-width: 80px;
+    font-size: 10px;
+}
+
+.metric-row span:last-child {
+    font-family: var(--font-mono);
+    color: var(--retro-green);
+    font-weight: bold;
+    min-width: 40px;
+    text-align: right;
+    font-size: 10px;
+}
+
+.confidence-bar, .risk-bar {
+    flex: 1;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--retro-border);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.confidence-fill, .risk-fill {
+    height: 100%;
+    background: var(--retro-green);
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 5px;
+}
+
+.risk-fill {
+    background: var(--retro-red);
+}
+
+/* Audiogram Canvas Styling */
+#audiogram-display {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--retro-border);
+    border-radius: 8px;
+    position: relative;
+}
+
+#audiogram-display canvas {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 6px;
+}
+
+/* Autonomous Completion Dialog */
+.completion-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    min-width: 500px;
+    max-width: 700px;
+    background: var(--retro-panel);
+    border: 3px solid var(--retro-accent);
+    border-radius: 12px;
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.8),
+        0 0 60px rgba(255, 217, 61, 0.3);
+    animation: dialogAppear 0.3s ease-out;
+}
+
+.ai-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.summary-section {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--retro-border);
+}
+
+.summary-section h4 {
+    margin: 0 0 10px 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--retro-accent);
+    text-align: center;
+}
+
+.summary-section p {
+    margin: 5px 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.summary-section strong {
+    color: var(--retro-accent);
+}
+
+/* Notifications */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--retro-accent);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease-out;
+}
+
+.notification.success {
+    background: var(--retro-green);
+    color: #000;
+}
+
+.notification.error {
+    background: var(--retro-red);
+    color: #fff;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes dialogAppear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.completion-dialog h3 {
+    color: var(--retro-accent);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+    text-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
+}
+
+.report-summary {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--retro-border);
+    margin-bottom: 20px;
+}
+
+.report-summary p {
+    margin: 8px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.report-summary strong {
+    color: var(--retro-accent);
+}
+
+.dialog-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.dialog-buttons .retro-button {
+    min-width: 120px;
+}
+
+/* Patient Panel Enhancements */
+.patient-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 500px;
+    justify-content: center;
+}
+
+.response-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+/* Loading and Status Animations */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--retro-border);
+    border-top: 4px solid var(--retro-accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.status-message {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid var(--retro-border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--retro-accent);
+    text-align: center;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .display-row {
+        flex-direction: column;
+    }
+    
+    .audiogram-container {
+        order: 2;
+    }
+    
+    .test-info {
+        order: 1;
+        flex-direction: row;
+        gap: 15px;
+    }
+    
+    .info-display,
+    .confidence-display {
+        flex: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .test-info {
+        flex-direction: column;
+    }
+    
+    .completion-dialog {
+        min-width: 300px;
+        margin: 20px;
+        max-width: calc(100vw - 40px);
+    }
+    
+    .dialog-buttons {
+        flex-direction: column;
+    }
+    
+    .metric-row {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .metric-row span:first-child {
+        min-width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .confidence-bar,
+    .risk-bar {
+        min-width: 100px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .retro-panel {
+        background: white;
+        border: 2px solid black;
+        box-shadow: none;
+    }
+    
+    .patient-panel,
+    .control-panel {
+        display: none;
+    }
+    
+    .display-panel {
+        width: 100%;
+        max-width: none;
+    }
+    
+    .completion-dialog {
+        position: static;
+        transform: none;
+        box-shadow: none;
+        border: 2px solid black;
+    }
+}

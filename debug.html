@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Retro Audiometer</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+        }
+        .debug-panel {
+            background: #111;
+            border: 1px solid #0f0;
+            padding: 20px;
+            margin: 10px 0;
+        }
+        button {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        #log {
+            height: 300px;
+            overflow-y: scroll;
+            background: #000;
+            border: 1px solid #0f0;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Retro Audiometer Debug Console</h1>
+    
+    <div class="debug-panel">
+        <h2>Module Loading Test</h2>
+        <button onclick="testModules()">Test Module Loading</button>
+        <button onclick="testAudio()">Test Audio System</button>
+        <button onclick="testAI()">Test AI Clinician</button>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>Console Output</h2>
+        <div id="log"></div>
+    </div>
+
+    <script type="module">
+        const log = document.getElementById('log');
+        
+        // Capture console output
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            log.textContent += '[LOG] ' + args.join(' ') + '\n';
+            log.scrollTop = log.scrollHeight;
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            log.textContent += '[ERROR] ' + args.join(' ') + '\n';
+            log.scrollTop = log.scrollHeight;
+        };
+        
+        window.clearLog = function() {
+            log.textContent = '';
+        };
+        
+        window.testModules = async function() {
+            console.log('Testing module imports...');
+            
+            try {
+                const { AudioGenerator } = await import('./src/audio/AudioGenerator.js');
+                console.log('✓ AudioGenerator imported successfully');
+                
+                const { AIClinician } = await import('./src/clinician/AIClinician.js');
+                console.log('✓ AIClinician imported successfully');
+                
+                const { TestSession } = await import('./src/state/TestSession.js');
+                console.log('✓ TestSession imported successfully');
+                
+                const { AudiogramPlotter } = await import('./src/audiogram/AudiogramPlotter.js');
+                console.log('✓ AudiogramPlotter imported successfully');
+                
+                console.log('All modules loaded successfully!');
+                
+            } catch (error) {
+                console.error('Module loading failed:', error);
+            }
+        };
+        
+        window.testAudio = async function() {
+            console.log('Testing audio system...');
+            
+            try {
+                const { AudioGenerator } = await import('./src/audio/AudioGenerator.js');
+                const audioGen = new AudioGenerator();
+                await audioGen.initialize();
+                console.log('✓ Audio system initialized');
+                
+                // Test tone generation
+                console.log('Playing test tone...');
+                await audioGen.playTone(1000, 40, 1000, 'both');
+                console.log('✓ Test tone played');
+                
+            } catch (error) {
+                console.error('Audio test failed:', error);
+            }
+        };
+        
+        window.testAI = async function() {
+            console.log('Testing AI Clinician...');
+            
+            try {
+                const { AIClinician } = await import('./src/clinician/AIClinician.js');
+                const ai = new AIClinician();
+                console.log('✓ AI Clinician created');
+                
+                console.log('Current state:', ai.currentState);
+                console.log('Test frequencies:', ai.frequencies);
+                console.log('Test ears:', ai.testEars);
+                
+            } catch (error) {
+                console.error('AI test failed:', error);
+            }
+        };
+        
+        // Auto-run module test on load
+        console.log('Debug console loaded');
+        testModules();
+    </script>
+</body>
+</html>
