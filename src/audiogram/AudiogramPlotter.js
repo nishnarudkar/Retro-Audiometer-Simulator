@@ -274,32 +274,32 @@ export class AudiogramPlotter {
         
         // Title
         ctx.fillStyle = this.colors.text;
-        ctx.font = 'bold 10px monospace';
+        ctx.font = 'bold 11px monospace';
         ctx.fillText('LEGEND', legendX, legendY + yOffset);
-        yOffset += 15;
+        yOffset += 18;
         
-        ctx.font = '9px monospace';
+        ctx.font = '10px monospace';
         
         // Ear symbols
         ctx.fillStyle = this.colors.leftEar;
-        ctx.fillRect(legendX, legendY + yOffset, 12, 2);
+        ctx.fillRect(legendX, legendY + yOffset, 10, 10);
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('● Left Ear', legendX + 16, legendY + yOffset + 6);
-        yOffset += 12;
+        ctx.fillText('● Left Ear', legendX + 15, legendY + yOffset + 8);
+        yOffset += 16;
         
         ctx.fillStyle = this.colors.rightEar;
-        ctx.fillRect(legendX, legendY + yOffset, 12, 2);
+        ctx.fillRect(legendX, legendY + yOffset, 10, 10);
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('▲ Right Ear', legendX + 16, legendY + yOffset + 6);
-        yOffset += 18;
+        ctx.fillText('▲ Right Ear', legendX + 15, legendY + yOffset + 8);
+        yOffset += 20;
         
         // Confidence levels
         ctx.fillStyle = this.colors.text;
-        ctx.font = 'bold 9px monospace';
+        ctx.font = 'bold 10px monospace';
         ctx.fillText('CONFIDENCE', legendX, legendY + yOffset);
-        yOffset += 12;
+        yOffset += 16;
         
-        ctx.font = '8px monospace';
+        ctx.font = '9px monospace';
         
         const confidenceLevels = [
             { range: '100%', color: this.colors.excellentConfidence, label: 'Excellent' },
@@ -312,50 +312,50 @@ export class AudiogramPlotter {
         
         confidenceLevels.forEach(level => {
             ctx.fillStyle = level.color;
-            ctx.fillRect(legendX, legendY + yOffset, 8, 8);
+            ctx.fillRect(legendX, legendY + yOffset, 10, 10);
             ctx.fillStyle = this.colors.text;
-            ctx.fillText(`${level.range}`, legendX + 12, legendY + yOffset + 6);
-            ctx.fillText(`${level.label}`, legendX + 45, legendY + yOffset + 6);
-            yOffset += 10;
+            ctx.fillText(`${level.range}`, legendX + 15, legendY + yOffset + 8);
+            ctx.fillText(`${level.label}`, legendX + 50, legendY + yOffset + 8);
+            yOffset += 14;
         });
         
-        yOffset += 8;
+        yOffset += 10;
         
         // Visual indicators
         ctx.fillStyle = this.colors.text;
-        ctx.font = 'bold 9px monospace';
+        ctx.font = 'bold 10px monospace';
         ctx.fillText('INDICATORS', legendX, legendY + yOffset);
-        yOffset += 12;
+        yOffset += 16;
         
-        ctx.font = '8px monospace';
+        ctx.font = '9px monospace';
         
         // Error bars
         ctx.strokeStyle = this.colors.confidence;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(legendX, legendY + yOffset + 5);
-        ctx.lineTo(legendX + 12, legendY + yOffset + 5);
-        ctx.moveTo(legendX + 6, legendY + yOffset + 2);
-        ctx.lineTo(legendX + 6, legendY + yOffset + 8);
+        ctx.lineTo(legendX + 10, legendY + yOffset + 5);
+        ctx.moveTo(legendX + 5, legendY + yOffset + 2);
+        ctx.lineTo(legendX + 5, legendY + yOffset + 8);
         ctx.stroke();
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('Error Bars', legendX + 18, legendY + yOffset + 9);
-        yOffset += 15;
+        ctx.fillText('Error Bars', legendX + 15, legendY + yOffset + 8);
+        yOffset += 14;
         
         // Opacity
         ctx.fillStyle = this.colors.leftEar;
         ctx.globalAlpha = 0.4;
-        ctx.fillRect(legendX, legendY + yOffset, 12, 12);
+        ctx.fillRect(legendX, legendY + yOffset, 10, 10);
         ctx.globalAlpha = 1.0;
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('Low Confidence', legendX + 18, legendY + yOffset + 9);
-        yOffset += 15;
+        ctx.fillText('Low Confidence', legendX + 15, legendY + yOffset + 8);
+        yOffset += 14;
         
         // Normal range
         ctx.fillStyle = this.colors.normalRange;
-        ctx.fillRect(legendX, legendY + yOffset, 15, 3);
+        ctx.fillRect(legendX, legendY + yOffset, 12, 3);
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('Normal Range', legendX + 20, legendY + yOffset + 8);
+        ctx.fillText('Normal Range', legendX + 15, legendY + yOffset + 8);
     }
 
     /**
