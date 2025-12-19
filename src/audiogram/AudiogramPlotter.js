@@ -98,12 +98,19 @@ export class AudiogramPlotter {
 
     setupResponsiveCanvas() {
         const container = document.getElementById(this.containerId);
-        if (!container) return;
+        if (!container) {
+            console.error(`AudiogramPlotter: Container '${this.containerId}' not found`);
+            return;
+        }
         
         // Get container dimensions
         const containerRect = container.getBoundingClientRect();
-        const containerWidth = containerRect.width - 20; // Account for padding
-        const containerHeight = containerRect.height - 20;
+        let containerWidth = containerRect.width - 20; // Account for padding
+        let containerHeight = containerRect.height - 20;
+        
+        // Fallback dimensions if container has no size
+        if (containerWidth <= 0) containerWidth = 380;
+        if (containerHeight <= 0) containerHeight = 280;
         
         // Calculate responsive dimensions while maintaining aspect ratio
         const aspectRatio = this.width / this.height;
@@ -797,10 +804,21 @@ export class AudiogramPlotter {
      * Draw enhanced confidence visualization
      */
     drawConfidenceVisualization() {
+        if (!this.ctx || !this.canvas) {
+            console.warn('Canvas not initialized for confidence visualization');
+            return;
+        }
+        
         const ctx = this.ctx;
-        const width = this.currentWidth || this.canvas.width;
-        const height = this.currentHeight || this.canvas.height;
+        const width = this.currentWidth || this.canvas.width || 400;
+        const height = this.currentHeight || this.canvas.height || 300;
         const margins = this.scaledMargins || this.margins;
+        
+        if (!width || !height) {
+            console.warn('Invalid canvas dimensions for confidence visualization');
+            return;
+        }
+        
         const plotWidth = width - margins.left - margins.right;
         const plotHeight = height - margins.top - margins.bottom;
         

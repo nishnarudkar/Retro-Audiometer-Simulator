@@ -61,6 +61,7 @@ class RetroAudiometerUI {
             console.log('Test session initialized');
             
             this.audiogramPlotter = new AudiogramPlotter('audiogram-container');
+            this.audiogramPlotter.initialize();
             console.log('Audiogram plotter initialized');
             
             // Initialize guidance system

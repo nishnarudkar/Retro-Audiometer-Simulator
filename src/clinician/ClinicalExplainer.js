@@ -396,12 +396,24 @@ export class ClinicalExplainer {
      * @returns {Object} Confidence descriptor
      */
     getConfidenceDescriptor(confidencePercent) {
+        // Defensive check for undefined confidence
+        if (typeof confidencePercent !== 'number' || isNaN(confidencePercent)) {
+            console.warn('Invalid confidence percentage:', confidencePercent);
+            return this.confidenceDescriptors.poor;
+        }
+        
+        // Ensure confidenceDescriptors is properly initialized
+        if (!this.confidenceDescriptors) {
+            console.error('confidenceDescriptors not initialized');
+            return { min: 0, descriptor: "unknown", clinical: "unable to assess" };
+        }
+        
         for (const [level, descriptor] of Object.entries(this.confidenceDescriptors)) {
-            if (confidencePercent >= descriptor.min) {
+            if (descriptor && typeof descriptor.min === 'number' && confidencePercent >= descriptor.min) {
                 return descriptor;
             }
         }
-        return this.confidenceDescriptors.poor;
+        return this.confidenceDescriptors.poor || { min: 0, descriptor: "poor", clinical: "unreliable" };
     }
 
     /**
