@@ -259,103 +259,99 @@ export class AudiogramPlotter {
         const width = this.currentWidth || this.canvas.width;
         const height = this.currentHeight || this.canvas.height;
         
-        // Responsive legend positioning
-        const legendWidth = Math.min(140, width * 0.25);
-        const legendX = width - legendWidth - 10;
-        const legendY = 50;
+        // Compact legend positioning
+        const legendWidth = 100;
+        const legendX = width - legendWidth - 5;
+        const legendY = 40;
         
-        // Compact legend background - scale with canvas height
-        const legendHeight = Math.min(200, height * 0.7);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        ctx.fillRect(legendX - 5, legendY - 5, legendWidth + 10, legendHeight);
+        // Clean legend background
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+        ctx.fillRect(legendX - 5, legendY - 5, legendWidth + 10, height - 80);
         
-        ctx.font = '11px monospace';
-        let yOffset = 0;
+        let yOffset = 10;
         
         // Title
         ctx.fillStyle = this.colors.text;
-        ctx.font = 'bold 11px monospace';
+        ctx.font = 'bold 10px monospace';
+        ctx.textAlign = 'left';
         ctx.fillText('LEGEND', legendX, legendY + yOffset);
-        yOffset += 18;
-        
-        ctx.font = '10px monospace';
-        
-        // Ear symbols
-        ctx.fillStyle = this.colors.leftEar;
-        ctx.fillRect(legendX, legendY + yOffset, 10, 10);
-        ctx.fillStyle = this.colors.text;
-        ctx.fillText('● Left Ear', legendX + 15, legendY + yOffset + 8);
-        yOffset += 16;
-        
-        ctx.fillStyle = this.colors.rightEar;
-        ctx.fillRect(legendX, legendY + yOffset, 10, 10);
-        ctx.fillStyle = this.colors.text;
-        ctx.fillText('▲ Right Ear', legendX + 15, legendY + yOffset + 8);
         yOffset += 20;
         
-        // Confidence levels
-        ctx.fillStyle = this.colors.text;
-        ctx.font = 'bold 10px monospace';
-        ctx.fillText('CONFIDENCE', legendX, legendY + yOffset);
-        yOffset += 16;
-        
+        // Ear symbols - simplified
         ctx.font = '9px monospace';
+        ctx.fillStyle = this.colors.leftEar;
+        ctx.fillRect(legendX, legendY + yOffset, 8, 8);
+        ctx.fillStyle = this.colors.text;
+        ctx.fillText('Left Ear', legendX + 12, legendY + yOffset + 6);
+        yOffset += 15;
         
+        ctx.fillStyle = this.colors.rightEar;
+        ctx.fillRect(legendX, legendY + yOffset, 8, 8);
+        ctx.fillStyle = this.colors.text;
+        ctx.fillText('Right Ear', legendX + 12, legendY + yOffset + 6);
+        yOffset += 25;
+        
+        // Confidence - simplified
+        ctx.fillStyle = this.colors.text;
+        ctx.font = 'bold 9px monospace';
+        ctx.fillText('CONFIDENCE', legendX, legendY + yOffset);
+        yOffset += 15;
+        
+        ctx.font = '8px monospace';
         const confidenceLevels = [
-            { range: '100%', color: this.colors.excellentConfidence, label: 'Excellent' },
-            { range: '80%', color: this.colors.goodConfidence, label: 'Good' },
-            { range: '70%', color: this.colors.moderateConfidence, label: 'Moderate' },
-            { range: '60%', color: this.colors.fairConfidence, label: 'Fair' },
-            { range: '50%', color: this.colors.poorConfidence, label: 'Poor' },
-            { range: '<50%', color: this.colors.veryPoorConfidence, label: 'Very Poor' }
+            { color: this.colors.excellentConfidence, label: '100% Excellent' },
+            { color: this.colors.goodConfidence, label: '80% Good' },
+            { color: this.colors.moderateConfidence, label: '70% Moderate' },
+            { color: this.colors.fairConfidence, label: '60% Fair' },
+            { color: this.colors.poorConfidence, label: '50% Poor' },
+            { color: this.colors.veryPoorConfidence, label: '<50% Very Poor' }
         ];
         
         confidenceLevels.forEach(level => {
             ctx.fillStyle = level.color;
-            ctx.fillRect(legendX, legendY + yOffset, 10, 10);
+            ctx.fillRect(legendX, legendY + yOffset, 6, 6);
             ctx.fillStyle = this.colors.text;
-            ctx.fillText(`${level.range}`, legendX + 15, legendY + yOffset + 8);
-            ctx.fillText(`${level.label}`, legendX + 50, legendY + yOffset + 8);
-            yOffset += 14;
+            ctx.fillText(level.label, legendX + 10, legendY + yOffset + 5);
+            yOffset += 12;
         });
         
         yOffset += 10;
         
-        // Visual indicators
+        // Indicators - simplified
         ctx.fillStyle = this.colors.text;
-        ctx.font = 'bold 10px monospace';
+        ctx.font = 'bold 9px monospace';
         ctx.fillText('INDICATORS', legendX, legendY + yOffset);
-        yOffset += 16;
+        yOffset += 15;
         
-        ctx.font = '9px monospace';
+        ctx.font = '8px monospace';
         
         // Error bars
         ctx.strokeStyle = this.colors.confidence;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(legendX, legendY + yOffset + 5);
-        ctx.lineTo(legendX + 10, legendY + yOffset + 5);
-        ctx.moveTo(legendX + 5, legendY + yOffset + 2);
-        ctx.lineTo(legendX + 5, legendY + yOffset + 8);
+        ctx.moveTo(legendX, legendY + yOffset + 3);
+        ctx.lineTo(legendX + 8, legendY + yOffset + 3);
+        ctx.moveTo(legendX + 4, legendY + yOffset + 1);
+        ctx.lineTo(legendX + 4, legendY + yOffset + 5);
         ctx.stroke();
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('Error Bars', legendX + 15, legendY + yOffset + 8);
-        yOffset += 14;
+        ctx.fillText('Error Bars', legendX + 12, legendY + yOffset + 5);
+        yOffset += 12;
         
-        // Opacity
+        // Low confidence
         ctx.fillStyle = this.colors.leftEar;
         ctx.globalAlpha = 0.4;
-        ctx.fillRect(legendX, legendY + yOffset, 10, 10);
+        ctx.fillRect(legendX, legendY + yOffset, 6, 6);
         ctx.globalAlpha = 1.0;
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('Low Confidence', legendX + 15, legendY + yOffset + 8);
-        yOffset += 14;
+        ctx.fillText('Low Confidence', legendX + 10, legendY + yOffset + 5);
+        yOffset += 12;
         
         // Normal range
         ctx.fillStyle = this.colors.normalRange;
-        ctx.fillRect(legendX, legendY + yOffset, 12, 3);
+        ctx.fillRect(legendX, legendY + yOffset, 8, 2);
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('Normal Range', legendX + 15, legendY + yOffset + 8);
+        ctx.fillText('Normal Range', legendX + 12, legendY + yOffset + 5);
     }
 
     /**
