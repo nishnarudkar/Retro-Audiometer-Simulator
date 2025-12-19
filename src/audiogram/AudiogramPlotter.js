@@ -89,18 +89,8 @@ export class AudiogramPlotter {
         // Set up responsive sizing
         this.setupResponsiveCanvas();
         
-        // Initial draw with debugging
-        console.log('Canvas created:', this.canvas.width, 'x', this.canvas.height);
-        console.log('Container dimensions:', container.getBoundingClientRect());
-        
+        // Initial draw
         this.drawAudiogramGrid();
-        
-        // Add a visible test to ensure canvas is working
-        if (this.ctx) {
-            this.ctx.fillStyle = '#ff0000';
-            this.ctx.fillRect(10, 10, 50, 50);
-            console.log('Test red square drawn');
-        }
         
         // Add resize listener for responsive behavior
         window.addEventListener('resize', () => this.handleResize());
@@ -119,16 +109,8 @@ export class AudiogramPlotter {
         let containerHeight = containerRect.height - 20;
         
         // Fallback dimensions if container has no size
-        if (containerWidth <= 0) {
-            containerWidth = 380;
-            console.warn('Container width is 0, using fallback:', containerWidth);
-        }
-        if (containerHeight <= 0) {
-            containerHeight = 280;
-            console.warn('Container height is 0, using fallback:', containerHeight);
-        }
-        
-        console.log('Using container dimensions:', containerWidth, 'x', containerHeight);
+        if (containerWidth <= 0) containerWidth = 380;
+        if (containerHeight <= 0) containerHeight = 280;
         
         // Calculate responsive dimensions while maintaining aspect ratio
         const aspectRatio = this.width / this.height;
@@ -152,8 +134,6 @@ export class AudiogramPlotter {
         // Update internal dimensions for drawing calculations
         this.currentWidth = canvasWidth;
         this.currentHeight = canvasHeight;
-        
-        console.log('Canvas dimensions set to:', canvasWidth, 'x', canvasHeight);
         
         // Scale margins proportionally
         const scale = Math.min(canvasWidth / this.width, canvasHeight / this.height);
