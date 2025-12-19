@@ -61,8 +61,25 @@ class RetroAudiometerUI {
             console.log('Test session initialized');
             
             this.audiogramPlotter = new AudiogramPlotter('audiogram-container');
-            this.audiogramPlotter.initialize();
-            console.log('Audiogram plotter initialized');
+            
+            // Delay initialization to ensure DOM is fully rendered
+            setTimeout(() => {
+                try {
+                    this.audiogramPlotter.initialize();
+                    console.log('Audiogram plotter initialized successfully');
+                } catch (error) {
+                    console.error('Failed to initialize audiogram plotter:', error);
+                    // Try again after a longer delay
+                    setTimeout(() => {
+                        try {
+                            this.audiogramPlotter.initialize();
+                            console.log('Audiogram plotter initialized on retry');
+                        } catch (retryError) {
+                            console.error('Audiogram plotter initialization failed completely:', retryError);
+                        }
+                    }, 1000);
+                }
+            }, 100);
             
             // Initialize guidance system
             this.guidanceSystem = new GuidanceSystem();
@@ -769,44 +786,30 @@ class RetroAudiometerUI {
     }
 
     showPowerOnInterface() {
-        // Hide start button initially
+        // Start button should be disabled initially (already set in HTML)
         const startButton = document.getElementById('start-test');
         if (startButton) {
-            startButton.style.display = 'none';
+            startButton.disabled = true;
         }
         
-        // Create and show power on button
-        this.createPowerOnButton();
+        // Set up power on button event listener
+        this.setupPowerOnButton();
         
         // Update power indicator to show off state
         this.setPowerIndicator(false);
     }
 
-    createPowerOnButton() {
-        const buttonPanel = document.querySelector('.button-panel');
-        if (!buttonPanel) return;
+    setupPowerOnButton() {
+        const powerButton = document.getElementById('power-on-button');
+        if (!powerButton) {
+            console.error('Power On button not found in HTML');
+            return;
+        }
         
-        // Create power on button
-        const powerButton = document.createElement('button');
-        powerButton.className = 'retro-button power-button';
-        powerButton.id = 'power-on-button';
-        powerButton.innerHTML = `
-            <div class="button-face">
-                <span>POWER ON</span>
-                <span class="button-subtext">AUDIO SYSTEM</span>
-            </div>
-        `;
-        
-        // Add click handler
+        // Add click handler to existing power button
         powerButton.addEventListener('click', () => this.handlePowerOn());
         
-        // Insert before start button
-        const startButton = document.getElementById('start-test');
-        if (startButton) {
-            buttonPanel.insertBefore(powerButton, startButton);
-        } else {
-            buttonPanel.appendChild(powerButton);
-        }
+        console.log('Power On button event listener attached');
     }
 
     async handlePowerOn() {
@@ -837,12 +840,17 @@ class RetroAudiometerUI {
             this.updateStatus('READY', 'Audio system online - Ready for testing');
             this.updateDisplay('ai-command', 'AUDIO SYSTEM ONLINE - CLICK START AUTO TEST');
             
-            // Hide power button and show start button
+            // Disable power button and enable start button
             if (powerButton) {
-                powerButton.style.display = 'none';
+                powerButton.disabled = true;
+                powerButton.innerHTML = `
+                    <div class="button-face">
+                        <span>POWERED ON</span>
+                        <span class="button-subtext">READY</span>
+                    </div>
+                `;
             }
             if (startButton) {
-                startButton.style.display = 'block';
                 startButton.disabled = false;
             }
             
@@ -862,6 +870,10 @@ class RetroAudiometerUI {
                         <span class="button-subtext">RETRY</span>
                     </div>
                 `;
+            }
+            // Keep start button disabled on failure
+            if (startButton) {
+                startButton.disabled = true;
             }
             this.setPowerIndicator(false);
         }

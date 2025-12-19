@@ -370,6 +370,12 @@ export class AudiogramPlotter {
      * @param {Object} additionalData - Optional additional threshold data
      */
     plotThreshold(ear, frequency, threshold, confidence = 80, additionalData = {}) {
+        // Ensure canvas is initialized before plotting
+        if (!this.ctx || !this.canvas) {
+            console.warn('Canvas not initialized, skipping threshold plot');
+            return;
+        }
+        
         const key = `${ear}_${frequency}`;
         
         // Create threshold point with defaults for real-time plotting
@@ -593,6 +599,11 @@ export class AudiogramPlotter {
     }
 
     redrawAudiogram() {
+        if (!this.ctx || !this.canvas) {
+            console.warn('Canvas not initialized for redrawAudiogram');
+            return;
+        }
+        
         this.drawAudiogramGrid();
         this.drawConfidenceVisualization();
         this.plotThresholds();
@@ -863,9 +874,15 @@ export class AudiogramPlotter {
      * Draw confidence statistics panel
      */
     drawConfidenceStatistics() {
+        if (!this.ctx || !this.canvas) {
+            console.warn('Canvas not initialized for confidence statistics');
+            return;
+        }
+        
         const ctx = this.ctx;
+        const height = this.currentHeight || this.canvas.height || 300;
         const statsX = 20;
-        const statsY = this.height - 60;
+        const statsY = height - 60;
         
         // Calculate overall statistics
         const stats = this.calculateConfidenceStatistics();
