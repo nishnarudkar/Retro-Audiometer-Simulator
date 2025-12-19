@@ -10,12 +10,12 @@ export class AudiogramPlotter {
         this.width = 400;  // Reduced default size for viewport constraints
         this.height = 300; // Reduced default size for viewport constraints
         
-        // Audiogram parameters
-        this.frequencies = [125, 250, 500, 750, 1000, 1500, 2000, 3000, 4000, 6000, 8000];
-        this.dbRange = { min: -10, max: 120 };
+        // Standard audiometric frequencies (categorical, evenly spaced)
+        this.frequencies = [125, 250, 500, 1000, 2000, 4000, 8000];
+        this.dbRange = { min: -10, max: 110 }; // Standard clinical range
         
-        // Plotting margins
-        this.margins = { top: 50, right: 180, bottom: 80, left: 80 }; // Increased right margin for confidence legend
+        // Optimized margins for better space usage
+        this.margins = { top: 40, right: 120, bottom: 60, left: 60 };
         
         // Colors (retro theme with confidence indicators)
         this.colors = {
@@ -112,20 +112,13 @@ export class AudiogramPlotter {
         if (containerWidth <= 0) containerWidth = 380;
         if (containerHeight <= 0) containerHeight = 280;
         
-        // Calculate responsive dimensions while maintaining aspect ratio
-        const aspectRatio = this.width / this.height;
-        let canvasWidth = Math.min(containerWidth, this.width);
-        let canvasHeight = canvasWidth / aspectRatio;
-        
-        // If height exceeds container, scale by height instead
-        if (canvasHeight > containerHeight) {
-            canvasHeight = containerHeight;
-            canvasWidth = canvasHeight * aspectRatio;
-        }
+        // Fill the entire container (no aspect ratio constraint for clinical charts)
+        let canvasWidth = containerWidth;
+        let canvasHeight = containerHeight;
         
         // Ensure minimum canvas dimensions
         canvasWidth = Math.max(canvasWidth, 300);
-        canvasHeight = Math.max(canvasHeight, 200);
+        canvasHeight = Math.max(canvasHeight, 250);
         
         // Set canvas dimensions
         this.canvas.width = canvasWidth;
@@ -135,13 +128,12 @@ export class AudiogramPlotter {
         this.currentWidth = canvasWidth;
         this.currentHeight = canvasHeight;
         
-        // Scale margins proportionally
-        const scale = Math.min(canvasWidth / this.width, canvasHeight / this.height);
+        // Use fixed margins optimized for space usage
         this.scaledMargins = {
-            top: this.margins.top * scale,
-            right: this.margins.right * scale,
-            bottom: this.margins.bottom * scale,
-            left: this.margins.left * scale
+            top: this.margins.top,
+            right: this.margins.right,
+            bottom: this.margins.bottom,
+            left: this.margins.left
         };
     }
 
@@ -272,69 +264,70 @@ export class AudiogramPlotter {
         const legendX = width - legendWidth - 10;
         const legendY = 50;
         
-        // Legend background
+        // Compact legend background - scale with canvas height
+        const legendHeight = Math.min(200, height * 0.7);
         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        ctx.fillRect(legendX - 10, legendY - 10, 160, 280);
+        ctx.fillRect(legendX - 5, legendY - 5, legendWidth + 10, legendHeight);
         
         ctx.font = '11px monospace';
         let yOffset = 0;
         
         // Title
         ctx.fillStyle = this.colors.text;
-        ctx.font = 'bold 12px monospace';
+        ctx.font = 'bold 10px monospace';
         ctx.fillText('LEGEND', legendX, legendY + yOffset);
-        yOffset += 20;
+        yOffset += 15;
         
-        ctx.font = '11px monospace';
+        ctx.font = '9px monospace';
         
         // Ear symbols
         ctx.fillStyle = this.colors.leftEar;
-        ctx.fillRect(legendX, legendY + yOffset, 15, 3);
+        ctx.fillRect(legendX, legendY + yOffset, 12, 2);
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('● Left Ear', legendX + 20, legendY + yOffset + 8);
-        yOffset += 18;
+        ctx.fillText('● Left Ear', legendX + 16, legendY + yOffset + 6);
+        yOffset += 12;
         
         ctx.fillStyle = this.colors.rightEar;
-        ctx.fillRect(legendX, legendY + yOffset, 15, 3);
+        ctx.fillRect(legendX, legendY + yOffset, 12, 2);
         ctx.fillStyle = this.colors.text;
-        ctx.fillText('▲ Right Ear', legendX + 20, legendY + yOffset + 8);
-        yOffset += 25;
+        ctx.fillText('▲ Right Ear', legendX + 16, legendY + yOffset + 6);
+        yOffset += 18;
         
         // Confidence levels
         ctx.fillStyle = this.colors.text;
-        ctx.font = 'bold 11px monospace';
+        ctx.font = 'bold 9px monospace';
         ctx.fillText('CONFIDENCE', legendX, legendY + yOffset);
-        yOffset += 15;
+        yOffset += 12;
         
-        ctx.font = '10px monospace';
+        ctx.font = '8px monospace';
         
         const confidenceLevels = [
-            { range: '90-100%', color: this.colors.excellentConfidence, label: 'Excellent' },
-            { range: '80-89%', color: this.colors.goodConfidence, label: 'Good' },
-            { range: '70-79%', color: this.colors.moderateConfidence, label: 'Moderate' },
-            { range: '60-69%', color: this.colors.fairConfidence, label: 'Fair' },
-            { range: '50-59%', color: this.colors.poorConfidence, label: 'Poor' },
+            { range: '100%', color: this.colors.excellentConfidence, label: 'Excellent' },
+            { range: '80%', color: this.colors.goodConfidence, label: 'Good' },
+            { range: '70%', color: this.colors.moderateConfidence, label: 'Moderate' },
+            { range: '60%', color: this.colors.fairConfidence, label: 'Fair' },
+            { range: '50%', color: this.colors.poorConfidence, label: 'Poor' },
             { range: '<50%', color: this.colors.veryPoorConfidence, label: 'Very Poor' }
         ];
         
         confidenceLevels.forEach(level => {
             ctx.fillStyle = level.color;
-            ctx.fillRect(legendX, legendY + yOffset, 12, 12);
+            ctx.fillRect(legendX, legendY + yOffset, 8, 8);
             ctx.fillStyle = this.colors.text;
-            ctx.fillText(`${level.range}`, legendX + 18, legendY + yOffset + 9);
-            ctx.fillText(`${level.label}`, legendX + 70, legendY + yOffset + 9);
-            yOffset += 15;
+            ctx.fillText(`${level.range}`, legendX + 12, legendY + yOffset + 6);
+            ctx.fillText(`${level.label}`, legendX + 45, legendY + yOffset + 6);
+            yOffset += 10;
         });
         
-        yOffset += 10;
+        yOffset += 8;
         
         // Visual indicators
         ctx.fillStyle = this.colors.text;
-        ctx.font = 'bold 11px monospace';
+        ctx.font = 'bold 9px monospace';
         ctx.fillText('INDICATORS', legendX, legendY + yOffset);
-        yOffset += 15;
+        yOffset += 12;
         
-        ctx.font = '10px monospace';
+        ctx.font = '8px monospace';
         
         // Error bars
         ctx.strokeStyle = this.colors.confidence;
